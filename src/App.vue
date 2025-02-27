@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from "vue";
-let count = ref(0);
+let message = ref('Hello vue');
 
 </script>
 
 <template>
   <div class="container content section">
-    <button class="button is-primary" @click="count++">Click me</button>
-    <h1>{{ count }}</h1>
+    <input class="input" type="text" v-model="message">
+    <h1>{{ message.split('').reverse().join('') }}</h1>
   </div>
 </template>
 
