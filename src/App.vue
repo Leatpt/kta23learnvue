@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
+import ItemList from "./ItemList.vue";
 let message = ref('');
 let i = 0;
 let items = ref([
@@ -35,29 +36,9 @@ function addItem() {
       </div>
     </div>
 
-    <h1>All Items</h1>
-    <ul>
-      <li v-for="item in items" :key="item.id">
-        {{ item.value }}
-        <input type="checkbox" v-model="item.isDone">
-      </li>
-    </ul>
-
-    <h1>Done Items</h1>
-    <ul>
-      <li v-for="item in doneItems" :key="item.id">
-        {{ item.value }}
-        <input type="checkbox" v-model="item.isDone">
-      </li>
-    </ul>
-
-    <h1>ToDo Items</h1>
-    <ul>
-      <li v-for="item in toDoItems" :key="item.id">
-        {{ item.value }}
-        <input type="checkbox" v-model="item.isDone">
-      </li>
-    </ul>
+    <ItemList :items="items" title="All items"></ItemList>
+    <ItemList :items="doneItems" title="Done items"></ItemList>
+    <ItemList :items="toDoItems" title="ToDo items"></ItemList>
 
   </div>
 </template>
