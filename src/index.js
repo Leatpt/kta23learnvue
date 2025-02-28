@@ -2,11 +2,11 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import './index.css';
 
-import { createWebHistory, createRouter } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
+import ChuckNorris from './pages/ChuckNorris.vue';
 import Modals from './pages/Modals.vue';
 import ToDo from './pages/ToDo.vue';
-import ChuckNorris from './pages/ChuckNorris.vue';
 
 const routes = [
   { path: '/', component: Modals, name: 'Modals' },
@@ -18,6 +18,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
 
 createApp(App).use(router).mount('#root');

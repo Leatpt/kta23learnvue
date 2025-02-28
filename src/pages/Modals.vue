@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import Modal from '../components/Modal.vue';
 import ImageModal from '../components/ImageModal.vue';
-let modalActive = ref(false);
-let modalActive2 = ref(false);
-let modalActive3 = ref(false);
+import Modal from '../components/Modal.vue';
+const modalActive = ref(false);
+const modalActive2 = ref(false);
+const modalActive3 = ref(false);
 </script>
 
 <template>

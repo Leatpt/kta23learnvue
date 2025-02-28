@@ -1,26 +1,24 @@
 <script setup>
-import { ref, computed } from "vue";
-import ItemList from "../components/ItemList.vue";
-let message = ref('');
+import { computed, ref } from 'vue';
+import ItemList from '../components/ItemList.vue';
+const message = ref('');
 let i = 0;
-let items = ref([
-  {id: i++, value: 'Piim', isDone: false },
-  {id: i++, value: 'Sai', isDone: true },
-  {id: i++, value: 'Viin', isDone: false },
-  {id: i++, value: 'Õlu', isDone: true },
+const items = ref([
+  { id: i++, value: 'Piim', isDone: false },
+  { id: i++, value: 'Sai', isDone: true },
+  { id: i++, value: 'Viin', isDone: false },
+  { id: i++, value: 'Õlu', isDone: true },
 ]);
 
-let doneItems = computed(() => items.value.filter(item => item.isDone));
-let toDoItems = computed(() => items.value.filter(item => !item.isDone));
+const doneItems = computed(() => items.value.filter((item) => item.isDone));
+const toDoItems = computed(() => items.value.filter((item) => !item.isDone));
 
 function addItem() {
-  if(message.value.trim() !== ''){
-    items.value.push({id: i++, value: message.value.trim(), isDone: false });
+  if (message.value.trim() !== '') {
+    items.value.push({ id: i++, value: message.value.trim(), isDone: false });
   }
   message.value = '';
 }
-
-
 </script>
 
 <template>
