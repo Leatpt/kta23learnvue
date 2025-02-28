@@ -2,11 +2,13 @@
 import { ref } from 'vue';
 import Tabs from './components/Tabs.vue';
 
-let titles = ['Home', 'About', 'Contacts'];
+import Modals from './pages/Modals.vue';
+import ToDo from './pages/ToDo.vue';
+
+let titles = ['Modals', 'ToDo'];
 let contents = [
-    'Home page is cool',
-    'About page is cool',
-    'Contacts page is cool',
+    Modals,
+    ToDo
 ];
 let activeTab = ref(0);
 function tabChanged(key){
@@ -18,6 +20,6 @@ function tabChanged(key){
 <template>
     <Tabs :items="titles" @change="tabChanged"></Tabs>
     <div class="container section content">
-        <h1>{{ contents[activeTab] }}</h1>
+        <component :is="contents[activeTab]"></component>
     </div>
 </template>
