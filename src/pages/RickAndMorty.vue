@@ -8,30 +8,59 @@ import PagedPagination from '../components/PagedPagination.vue';
 const pagination = ref({});
 const characters = ref([]);
 const currentPage = ref(1);
-getCharacters('https://rickandmortyapi.com/api/character');
+const searchValue = ref('');
+let searchTimeout = null;
 
-async function getCharacters(url){
-    let response = await axios.get(url);
+
+getCharacters();
+
+async function getCharacters() {
+    let response = await axios.get('https://rickandmortyapi.com/api/character', {
+        params: {
+            page: currentPage.value,
+            name: searchValue.value
+        }
+    });
     pagination.value = response.data.info;
     characters.value = response.data.results;
 }
 
-async function next(){
+async function next() {
     currentPage.value++;
-    getCharacters(pagination.value.next);
+    getCharacters();
 }
-async function prev(){
+async function prev() {
     currentPage.value--;
-    getCharacters(pagination.value.prev);
+    getCharacters();
 }
 
 async function page(page) {
     currentPage.value = page;
-    getCharacters('https://rickandmortyapi.com/api/character?page=' + page);
+    getCharacters();
 }
+
+async function search() {
+    clearTimeout(searchTimeout); // debounce
+    searchTimeout = setTimeout(() => {
+        currentPage.value = 1;
+        getCharacters();
+    }, 600);
+}
+
 </script>
 <template>
-    <PagedPagination :current="currentPage" :pagination="pagination" @next="next" @prev="prev" @page="page"></PagedPagination>
+    <div class="field has-addons">
+        <div class="control is-expanded">
+            <input @input="search" class="input" type="text" placeholder="Seach" v-model="searchValue">
+        </div>
+        <div class="control">
+            <button @click="search" class="button is-primary">
+                Search
+            </button>
+        </div>
+    </div>
+    <PagedPagination :current="currentPage" :pagination="pagination" @next="next" @prev="prev" @page="page">
+    </PagedPagination>
     <div class="columns is-multiline">
         <div class="column is-one-quarter" v-for="character in characters">
             <CharacterCard :character="character"></CharacterCard>
