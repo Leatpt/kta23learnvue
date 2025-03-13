@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import CharacterCard from '../components/CharacterCard.vue';
 import SimplePagination from '../components/SimplePagination.vue';
 import PagedPagination from '../components/PagedPagination.vue';
@@ -22,7 +22,7 @@ async function getCharacters() {
         }
     });
     pagination.value = response.data.info;
-    characters.value = response.data.results;
+    characters.value.push(...response.data.results);
 }
 
 async function next() {
@@ -43,9 +43,20 @@ async function search() {
     clearTimeout(searchTimeout); // debounce
     searchTimeout = setTimeout(() => {
         currentPage.value = 1;
+        characters.value = [];
         getCharacters();
     }, 600);
 }
+
+onMounted(()=> {
+    document.addEventListener('scroll', () => {
+
+        if(window.scrollY + window.innerHeight > document.body.clientHeight - 300 && pagination.value.next){
+            next();
+        }
+    });
+
+});
 
 </script>
 <template>
@@ -59,11 +70,12 @@ async function search() {
             </button>
         </div>
     </div>
-    <PagedPagination :current="currentPage" :pagination="pagination" @next="next" @prev="prev" @page="page">
-    </PagedPagination>
     <div class="columns is-multiline">
         <div class="column is-one-quarter" v-for="character in characters">
             <CharacterCard :character="character"></CharacterCard>
         </div>
     </div>
+    <section v-if="!pagination.next" class="section is-large content has-text-centered">
+        <h1>No more Characters</h1>
+    </section>
 </template>
