@@ -1,14 +1,16 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
-let props = defineProps(['ctx']);
+let {ctx} = defineProps(['ctx']);
 
 onMounted(() => {
-    console.log(props);
-    // ctx.beginPath();
-    // ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-    // ctx.fillStyle = 'red';
-    // ctx.fill();
+    setTimeout(() => {
+        console.log(ctx);
+        ctx.beginPath();
+        ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+    },0);
 });
 </script>
 <template>
