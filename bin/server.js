@@ -1,4 +1,5 @@
 let messages = [];
+const clients = new Set();
 
 let cors = {
     headers: {
@@ -68,9 +69,23 @@ Bun.serve({
                     }
                 );
             },
-        }
+        },
+        "/ws": (req, server) => {
+            if (server.upgrade(req)) {
+                return; // do not return a Response
+            }
+            return new Response("Upgrade failed", { status: 500 });
+        },
     },
-
+    websocket: {
+        message(ws, message) {
+            clients.forEach(client => {
+                client.send(message);
+            });
+        },
+        open: ws => clients.add(ws),
+        close: ws => clients.delete(ws),
+    },
     // (optional) fallback for unmatched routes:
     // Required if Bun's version < 1.2.3
     fetch(req) {
