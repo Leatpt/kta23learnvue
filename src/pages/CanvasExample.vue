@@ -14,7 +14,6 @@ function mousemove(event){
     ball.value.y = event.y-event.target.offsetTop;
 }
 
-
 </script>
 <template>
     <input type="range" min="10" max="200" v-model="radius">
