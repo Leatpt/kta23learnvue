@@ -12,6 +12,7 @@ import CanvasExample from './pages/CanvasExample.vue';
 import MapsExample from './pages/MapsExample.vue';
 import CookieClicker from './pages/CookieClicker.vue';
 import Chat from './pages/Chat.vue';
+import WebApis from './pages/WebApis.vue';
 
 const routes = [
   { path: '/', component: Modals, name: 'Modals' },
@@ -22,6 +23,7 @@ const routes = [
   { path: '/maps', component: MapsExample, name: 'Maps', meta: { container: false } },
   { path: '/cookieclicker', component: CookieClicker, name: 'Cookie Clicker', meta: { container: false } },
   { path: '/chat', component: Chat, name: 'Chat' },
+  { path: '/webapis', component: WebApis, name: 'WebApis' },
 ];
 
 const router = createRouter({
