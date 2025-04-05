@@ -1,12 +1,18 @@
 <script setup>
 import { computed, ref } from "vue";
 import Cookie from "../components/Cookie.vue";
+import CookieStore from "../components/CookieStore.vue";
 
 let cookies = ref(0);
+let clickValue = ref(1);
 let buildings = ref([
   { name: "Cursor", price: 15, cps: 0.1, count: 0 },
   { name: "Grandma", price: 100, cps: 1, count: 0 },
   { name: "Farm", price: 1100, cps: 8, count: 0 },
+]);
+let upgrades = ref([
+  { name: "Double Click Power", price: 100, effect: 2, bought: false },
+  { name: "Triple Click Power", price: 500, effect: 3, bought: false },
 ]);
 
 setInterval(() => {
@@ -14,13 +20,21 @@ setInterval(() => {
 }, 1000);
 
 function cookieClick() {
-  cookies.value += 1;
+  cookies.value += clickValue.value;
 }
 
 function buyBuilding(building) {
   cookies.value -= building.price;
   building.count++;
   building.price += Math.ceil((building.price / 100) * 15);
+}
+
+function buyUpgrade(upgrade) {
+  if (cookies.value >= upgrade.price && !upgrade.bought) {
+    cookies.value -= upgrade.price;
+    clickValue.value *= upgrade.effect;
+    upgrade.bought = true;
+  }
 }
 
 const cps = computed(() => {
@@ -38,32 +52,39 @@ const cps = computed(() => {
           class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center"
           style="height: 100%"
         >
-          <div class="mb-4 text-center" :style="{ color: '#ffffff' }">
-            <p class="is-size-1 has-text-weight-bold">
+          <div
+            class="has-text-centered is-fullwidth is-semi-transparent"
+            :style="{
+              color: '#ffffff',
+              display: 'block',
+              width: '100%',
+            }"
+          >
+            <p class="is-size-2 has-text-weight-bold">
               Cookies: {{ +parseFloat(cookies).toFixed(1) }}
             </p>
             <p class="is-size-5">CPS: {{ +parseFloat(cps).toFixed(1) }}</p>
           </div>
 
-          <div class="mb-4">
+          <div class="mb-4 mt-6">
             <figure @click="cookieClick" class="image is-1by1">
-              <Cookie />
+              <Cookie :clickValue="clickValue" />
             </figure>
           </div>
 
           <div class="mb-4"></div>
         </div>
       </div>
-      <div class="column has-background-info"></div>
+      <div class="column is-7 has-background-info"></div>
       <div class="column is-2">
-        <CookieButton
+        <CookieStore
           v-for="building in buildings"
           :disabled="cookies < building.price"
           @click="buyBuilding(building)"
           class="button is-large is-fullwidth custom-button"
         >
           {{ building.name }} {{ building.price }} {{ building.count }}
-        </CookieButton>
+        </CookieStore>
       </div>
     </div>
   </div>
@@ -79,5 +100,9 @@ const cps = computed(() => {
     var(--stripe-2) calc(2 * (100% / 59))
   );
   height: 100%;
+}
+.is-semi-transparent {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
 }
 </style>
