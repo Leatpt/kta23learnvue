@@ -34,7 +34,6 @@ function handleClick(event) {
 
 <template>
   <div
-    class="cookie"
     :style="{
       width: '300px',
       height: '300px',
@@ -43,7 +42,6 @@ function handleClick(event) {
       alignItems: 'center',
       position: 'relative',
     }"
-    @click="handleClick"
   >
     <img
       src="/Glow.svg"
@@ -56,9 +54,10 @@ function handleClick(event) {
 
     <img
       src="https://pngimg.com/uploads/cookie/cookie_PNG13656.png"
+      class="cookie"
       alt="Cookie"
-      class="cookie-image"
       draggable="false"
+      @click="handleClick"
       :style="{
         width: '200px',
         height: '200px',
@@ -95,19 +94,17 @@ function handleClick(event) {
 <style scoped>
 .cookie {
   cursor: pointer;
+  z-index: 1;
+  transition: transform 0.3s ease;
 }
 
 .glow-circle {
   animation: rotate 10s linear infinite;
   z-index: 0;
+  pointer-events: none;
 }
 
-.cookie-image {
-  z-index: 1;
-  transition: transform 0.3s ease;
-}
-
-.cookie-image:hover {
+.cookie:hover {
   transform: scale(1.05);
 }
 
