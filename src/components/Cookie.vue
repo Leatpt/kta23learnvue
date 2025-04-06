@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   clickValue: {
@@ -8,8 +8,8 @@ const props = defineProps({
   },
 });
 
-const message = ref("");
-const messageStyle = ref({ left: "0px", top: "0px" });
+const messages = ref([]);
+let id = 0;
 
 function handleClick(event) {
   const cookieElement = event.currentTarget;
@@ -17,11 +17,17 @@ function handleClick(event) {
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 
-  message.value = `+${props.clickValue}`;
-  messageStyle.value = { left: `${x}px`, top: `${y}px` };
+  const newMessage = {
+    id: id++,
+    value: `+${props.clickValue}`,
+    left: `${x}px`,
+    top: `${y}px`,
+  };
+
+  messages.value.push(newMessage);
 
   setTimeout(() => {
-    message.value = "";
+    messages.value = messages.value.filter((msg) => msg.id !== newMessage.id);
   }, 2000);
 }
 </script>
@@ -44,13 +50,15 @@ function handleClick(event) {
       alt="Cookie"
     />
 
-    <transition name="fadeMove">
+    <transition-group name="fadeMove" tag="div">
       <div
-        v-if="message"
+        v-for="msg in messages"
+        :key="msg.id"
+        class="float-msg"
         :style="{
           position: 'absolute',
-          left: messageStyle.left,
-          top: messageStyle.top,
+          left: msg.left,
+          top: msg.top,
           backgroundColor: 'rgba(0, 0, 0, 0)',
           color: 'white',
           fontSize: '16px',
@@ -59,15 +67,26 @@ function handleClick(event) {
           pointerEvents: 'none',
         }"
       >
-        {{ message }}
+        {{ msg.value }}
       </div>
-    </transition>
+    </transition-group>
   </div>
 </template>
 
 <style scoped>
 .cookie {
   cursor: pointer;
+}
+
+.float-msg {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none;
+  animation: floatUp 2s ease-in forwards;
 }
 
 .fadeMove-enter-active,
@@ -78,10 +97,17 @@ function handleClick(event) {
 .fadeMove-enter,
 .fadeMove-leave-to {
   opacity: 0;
+  transform: translate(-50%, -50%) translateY(0);
 }
 
-.fadeMove-enter-to {
-  opacity: 1;
-  animation: moveUp 2s ease-in-out forwards;
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-100px);
+  }
 }
 </style>
