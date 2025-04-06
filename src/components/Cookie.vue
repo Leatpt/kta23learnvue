@@ -14,6 +14,7 @@ let id = 0;
 function handleClick(event) {
   const cookieElement = event.currentTarget;
   const rect = cookieElement.getBoundingClientRect();
+
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 
@@ -50,7 +51,7 @@ function handleClick(event) {
       draggable="false"
     />
 
-    <div class="cookie-shaodw"></div>
+    <div class="cookie-shadow"></div>
 
     <img
       src="https://pngimg.com/uploads/cookie/cookie_PNG13656.png"
@@ -94,8 +95,11 @@ function handleClick(event) {
 <style scoped>
 .cookie {
   cursor: pointer;
-  z-index: 1;
+  z-index: 2;
   transition: transform 0.3s ease;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
 }
 
 .glow-circle {
@@ -108,13 +112,15 @@ function handleClick(event) {
   transform: scale(1.05);
 }
 
-.cookie-shaodw {
+.cookie-shadow {
   position: absolute;
   width: 200px;
   height: 200px;
-  background-color: #1f0c00;
-  box-shadow: 2px 6px 10px #1f0c00;
+  top: 19%;
+  left: 17%;
+  background-color: #340714;
   border-radius: 50%;
+  filter: blur(5px);
   z-index: 1;
 }
 
@@ -127,7 +133,7 @@ function handleClick(event) {
   font-weight: bold;
   pointer-events: none;
   animation: floatUp 2s ease-in forwards;
-  z-index: 2;
+  z-index: 3;
 }
 
 .fadeMove-enter-active,
