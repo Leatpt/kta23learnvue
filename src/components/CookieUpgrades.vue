@@ -7,6 +7,9 @@ const props = defineProps({
   upgradeEffect: Number,
   upgradeStatus: Boolean,
   imageSrc: String,
+  boughtBuildingCount: Number,
+  connectedBuilding: String,
+  requiredBuildingCount: Number,
   cookies: Number,
 });
 
@@ -14,10 +17,17 @@ const emit = defineEmits(["buy"]);
 
 const { cookies, upgradeCost } = toRefs(props);
 const canAfford = computed(() => cookies.value >= upgradeCost.value);
+
+const canUpgrade = computed(() => {
+  return props.boughtBuildingCount >= props.requiredBuildingCount;
+});
+
+const upgradeVisible = computed(() => !props.upgradeStatus && canUpgrade.value);
 </script>
 
 <template>
   <div
+    v-if="upgradeVisible"
     class="upgrade-item ml-1"
     :class="{ disabled: !canAfford }"
     @click="canAfford && emit('buy')"

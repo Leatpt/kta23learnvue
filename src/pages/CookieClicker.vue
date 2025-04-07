@@ -19,6 +19,8 @@ let upgrades = ref([
     effect: 2,
     bought: false,
     image: "/double.svg",
+    connectedBuilding: "Cursor",
+    requiredBuildingCount: 5,
   },
   {
     name: "Triple Click Power",
@@ -26,6 +28,8 @@ let upgrades = ref([
     effect: 3,
     bought: false,
     image: "/triple.svg",
+    connectedBuilding: "Cursor",
+    requiredBuildingCount: 15,
   },
   {
     name: "Stronger Helpers",
@@ -33,6 +37,8 @@ let upgrades = ref([
     effect: 2,
     bought: false,
     image: "/farmerupgrade.svg",
+    connectedBuilding: "Helper",
+    requiredBuildingCount: 10,
   },
 ]);
 
@@ -56,6 +62,13 @@ function buyUpgrade(upgrade) {
     clickValue.value *= upgrade.effect;
     upgrade.bought = true;
   }
+}
+
+function getBuildingCount(buildingName) {
+  const building = buildings.value.find(
+    (building) => building.name === buildingName
+  );
+  return building ? building.count : 0;
 }
 
 const cps = computed(() => {
@@ -114,6 +127,11 @@ const cps = computed(() => {
                 :upgradeEffect="upgrade.effect"
                 :upgradeStatus="upgrade.bought"
                 :imageSrc="upgrade.image"
+                :buildings="upgrade.connectedBuilding"
+                :requiredBuildingCount="upgrade.requiredBuildingCount"
+                :boughtBuildingCount="
+                  getBuildingCount(upgrade.connectedBuilding)
+                "
                 :cookies="cookies"
                 @buy="buyUpgrade(upgrade)"
               />
