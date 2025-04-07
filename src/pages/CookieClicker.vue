@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import Cookie from "../components/Cookie.vue";
 import CookieStore from "../components/CookieStore.vue";
 import CookieStoreItem from "../components/CookieStoreItem.vue";
+import CookieUpgrades from "../components/CookieUpgrades.vue";
 
 let cookies = ref(0);
 let clickValue = ref(1);
@@ -12,8 +13,27 @@ let buildings = ref([
   { name: "Farm", price: 1100, cps: 8, count: 0, image: "/barn.png" },
 ]);
 let upgrades = ref([
-  { name: "Double Click Power", price: 100, effect: 2, bought: false },
-  { name: "Triple Click Power", price: 500, effect: 3, bought: false },
+  {
+    name: "Double Click Power",
+    price: 100,
+    effect: 2,
+    bought: false,
+    image: "/double.svg",
+  },
+  {
+    name: "Triple Click Power",
+    price: 500,
+    effect: 3,
+    bought: false,
+    image: "/triple.svg",
+  },
+  {
+    name: "Stronger Helpers",
+    price: 5000,
+    effect: 2,
+    bought: false,
+    image: "/farmerupgrade.svg",
+  },
 ]);
 
 setInterval(() => {
@@ -86,16 +106,31 @@ const cps = computed(() => {
       <div class="column is-7 has-background-info custom-border"></div>
       <div class="column is-2 custom-background custom-border">
         <CookieStore>
-          <div v-for="(building, index) in buildings" :key="index">
-            <CookieStoreItem
-              :buildingName="building.name"
-              :buildingCost="building.price"
-              :buildingCount="building.count"
-              :imageSrc="building.image"
-              :cookies="cookies"
-              @buy="buyBuilding(building)"
-            />
-          </div>
+          <template #upgrades>
+            <div v-for="(upgrade, index) in upgrades" :key="index">
+              <CookieUpgrades
+                :upgradeName="upgrade.name"
+                :upgradeCost="upgrade.price"
+                :upgradeEffect="upgrade.effect"
+                :upgradeStatus="upgrade.bought"
+                :imageSrc="upgrade.image"
+                :cookies="cookies"
+                @buy="buyUpgrade(upgrade)"
+              />
+            </div>
+          </template>
+          <template #store>
+            <div v-for="(building, index) in buildings" :key="index">
+              <CookieStoreItem
+                :buildingName="building.name"
+                :buildingCost="building.price"
+                :buildingCount="building.count"
+                :imageSrc="building.image"
+                :cookies="cookies"
+                @buy="buyBuilding(building)"
+              />
+            </div>
+          </template>
         </CookieStore>
       </div>
     </div>
