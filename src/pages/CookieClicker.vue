@@ -8,7 +8,7 @@ let cookies = ref(0);
 let clickValue = ref(1);
 let buildings = ref([
   { name: "Cursor", price: 15, cps: 0.1, count: 0, image: "/hand.png" },
-  { name: "Grandma", price: 100, cps: 1, count: 0, image: "/farmer.png" },
+  { name: "Helper", price: 100, cps: 1, count: 0, image: "/farmer.png" },
   { name: "Farm", price: 1100, cps: 8, count: 0, image: "/barn.png" },
 ]);
 let upgrades = ref([
@@ -92,6 +92,8 @@ const cps = computed(() => {
               :buildingCost="building.price"
               :buildingCount="building.count"
               :imageSrc="building.image"
+              :cookies="cookies"
+              @buy="buyBuilding(building)"
             />
           </div>
         </CookieStore>

@@ -1,14 +1,26 @@
 <script setup>
-defineProps({
+import { computed, toRefs } from "vue";
+
+const props = defineProps({
   buildingName: String,
-  buildingCost: String,
+  buildingCost: Number,
   buildingCount: Number,
   imageSrc: String,
+  cookies: Number,
 });
+
+const emit = defineEmits(["buy"]);
+
+const { cookies, buildingCost } = toRefs(props);
+const canAfford = computed(() => cookies.value >= buildingCost.value);
 </script>
 
 <template>
-  <div class="store-item">
+  <div
+    class="store-item"
+    :class="{ disabled: !canAfford }"
+    @click="canAfford && emit('buy')"
+  >
     <div class="columns is-vcentered">
       <div class="column auto-image-column">
         <img :src="imageSrc" alt="Image" class="image" />
@@ -101,5 +113,10 @@ defineProps({
 .inline-icon {
   height: 1em;
   width: auto;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 </style>
