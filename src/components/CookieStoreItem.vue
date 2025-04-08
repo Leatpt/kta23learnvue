@@ -51,6 +51,8 @@ const canAfford = computed(() => cookies.value >= buildingCost.value);
   padding: 2px;
   color: var(--stripe-3);
   text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
 }
 
 .columns {
@@ -118,5 +120,6 @@ const canAfford = computed(() => cookies.value >= buildingCost.value);
 .disabled {
   opacity: 0.5;
   pointer-events: none;
+  cursor: default;
 }
 </style>

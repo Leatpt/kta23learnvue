@@ -15,12 +15,12 @@ let buildings = ref([
 let upgrades = ref([
   {
     name: "Double Click Power",
-    price: 100,
+    price: 50,
     effect: 2,
     bought: false,
     image: "/double.svg",
     connectedBuilding: "Cursor",
-    requiredBuildingCount: 5,
+    requiredBuildingCount: 1,
   },
   {
     name: "Triple Click Power",
